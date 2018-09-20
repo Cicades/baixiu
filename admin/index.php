@@ -1,3 +1,8 @@
+<?php 
+session_start();
+ if(empty($_SESSION['user_logined']))
+  header('Location:/admin/login.php');
+ ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
