@@ -1,7 +1,11 @@
 <?php 
-session_start();
- if(empty($_SESSION['user_logined']))
-  header('Location:/admin/login.php');
+include_once '../functions.php';
+  xiu_get_current_user();
+  $posts=xiu_fetch('select count(1) as num from posts;');
+  $posts_drafted=xiu_fetch("select count(1) as drafted_num from posts where status='drafted';");
+  $categories=xiu_fetch('select count(1) as num from categories;');
+  $comments=xiu_fetch('select count(1) as num from comments;');
+  $comments_held=xiu_fetch("select count(1) as comments_held from comments where status='held';");
  ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -31,9 +35,9 @@ session_start();
               <h3 class="panel-title">站点内容统计：</h3>
             </div>
             <ul class="list-group">
-              <li class="list-group-item"><strong>10</strong>篇文章（<strong>2</strong>篇草稿）</li>
-              <li class="list-group-item"><strong>6</strong>个分类</li>
-              <li class="list-group-item"><strong>5</strong>条评论（<strong>1</strong>条待审核）</li>
+              <li class="list-group-item"><strong><?php echo $posts[0]['num'] ?></strong>篇文章（<strong><?php echo $posts_drafted[0]['drafted_num'] ?></strong>篇草稿）</li>
+              <li class="list-group-item"><strong><?php echo $categories[0]['num']; ?></strong>个分类</li>
+              <li class="list-group-item"><strong><?php echo $comments[0]['num']; ?></strong>条评论（<strong><?php echo $comments_held[0]['comments_held'] ?></strong>条待审核）</li>
             </ul>
           </div>
         </div>
