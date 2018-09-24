@@ -1,7 +1,7 @@
   <div class="aside">
     <div class="profile">
-      <img class="avatar" src="/static/uploads/avatar.jpg">
-      <h3 class="name">布头儿</h3>
+      <img class="avatar" src="<?php echo $_SESSION['user_logined']['avatar'] ?>">
+      <h3 class="name"><?php echo $_SESSION['user_logined']['nickname'] ?></h3>
     </div>
     <ul class="nav">
       <li <?php echo $current_page==='index'?' class=active':''; ?>>

@@ -14,11 +14,11 @@ function login()
   }
   $email=$_POST['email'];
   $password=$_POST['password'];
-  $conn=mysqli_connect(DB_HOST,DB_USER_NAME,DB_PASSWORD,DB_NAME);
+  $conn=mysqli_connect(xiu_DB_HOST,xiu_DB_USER_NAME,xiu_DB_PASSWORD,xiu_DB_NAME);
   if (!$conn) {
     exit('<h1>数据库连接失败！</h1>');
   }
-  $query=mysqli_query($conn,"SELECT email,`password` FROM users WHERE '{$email}'='hyf' limit 1;");
+  $query=mysqli_query($conn,"SELECT * FROM users WHERE email='{$email}' limit 1;");
   if (!$query) {
     $GLOBALS['error_message'] = '您输入的用户名不存在！';
     return;
@@ -38,6 +38,9 @@ function login()
 if ($_SERVER['REQUEST_METHOD']==='POST') {
   login();
 }
+if ($_SERVER['REQUEST_METHOD']==='GET'&&isset($_GET['action'])&&$_GET['action']==='loginout') {
+  unset($_SESSION['user_logined']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -47,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
   <link rel="stylesheet" href="/static/assets/vendors/bootstrap/css/bootstrap.css">
   <link rel="stylesheet" href="/static/assets/css/admin.css">
   <link rel="stylesheet" type="text/css" href="/static/assets/vendors/animate/animate.min.css">
+  <script src="/static/assets/vendors/jquery/jquery.min.js"></script>
 </head>
 <body>
   <div class="login">
@@ -68,5 +72,22 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
       <button class="btn btn-primary btn-block">登 录</button>
     </form>
   </div>
+  <script type="text/javascript">
+    $(function(){
+      $('#email').on('blur',function(){
+        var email_val=$('#email').val();
+        //对输入邮箱进行校验
+        if(email_val&&(/^[0-9a-zA-Z_]+@[0-9a-zA-Z_]+\.\w/.test(email_val))){
+          $.post('/admin/api/avatar.php',{email:email_val},function(res){
+          $('.avatar').fadeOut(function(){
+            $(this).attr('src',res).on('load',function(){
+              $(this).fadeIn();
+            })
+          })
+        })
+        }
+      })
+    })
+  </script>
 </body>
 </html>
