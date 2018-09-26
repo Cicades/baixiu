@@ -8,7 +8,6 @@ session_start();
 function xiu_get_current_user(){
 	if (empty($_SESSION['user_logined'])) {
 		header('Location:/admin/login.php');
-		exit();
 	}
 	return $_SESSION['user_logined'];
 }
