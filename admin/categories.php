@@ -205,7 +205,6 @@ $categories=xiu_fetch('select * from categories;');
         }
       });
     })
-
   </script>
 </body>
 </html>
