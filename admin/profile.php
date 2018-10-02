@@ -1,4 +1,4 @@
-<?php  
+<?php
 require_once '../functions.php';
 xiu_get_current_user();
 ?>
@@ -15,9 +15,8 @@ xiu_get_current_user();
 </head>
 <body>
   <script>NProgress.start()</script>
-
   <div class="main">
-<?php include 'inc/navbar.php'; ?>
+  <?php include 'inc/navbar.php';?>
     <div class="container-fluid">
       <div class="page-title">
         <h1>我的个人资料</h1>
@@ -37,6 +36,7 @@ xiu_get_current_user();
             </label>
           </div>
         </div>
+        <input type="hidden" name="avatar-src" id="avatar-src">
         <div class="form-group">
           <label for="email" class="col-sm-3 control-label">邮箱</label>
           <div class="col-sm-6">
@@ -73,11 +73,28 @@ xiu_get_current_user();
       </form>
     </div>
   </div>
-  <?php $current_page='profile' ?>
-<?php include'inc/sidebar.php' ?>
-
+  <?php $current_page = 'profile'?>
+  <?php include 'inc/sidebar.php'?>
   <script src="/static/assets/vendors/jquery/jquery.js"></script>
   <script src="/static/assets/vendors/bootstrap/js/bootstrap.js"></script>
   <script>NProgress.done()</script>
+  <script>
+    $('#avatar').on('change',function () {
+      console.dir(this);
+      if ($(this).prop('files').length<1) return;
+      var file=$(this).prop('files')[0];
+      //FormData 用來傳遞二進制數據配合ajax操作
+      var data=new FormData();
+      data.append('avatar',file);
+      var xhr= new XMLHttpRequest();
+      xhr.open('post','/admin/api/upload.php');
+      xhr.send(data);
+      xhr.onload=function(){
+        var avatarSrc=this.responseText;
+        $('#avatar+img').attr('src',avatarSrc);
+        $('#avatar-src').val(avatarSrc);
+      }
+    })
+  </script>
 </body>
 </html>
